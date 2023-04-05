@@ -1,29 +1,21 @@
-import { FC, useEffect, useState } from "react";
+import { FC, memo, useEffect, useState } from "react";
 import { IComment, IPost } from "./types";
+import { useComments } from "./hooks/useComments";
 
 interface Props {
   post: IPost;
-  onBackPress: () => void;
+  onBackPress?: () => void;
 }
 
-export const Post: FC<Props> = (props) => {
+export const Post: FC<Props> = memo((props) => {
   const { post, onBackPress } = props;
 
-  const [comments, setComments] = useState<IComment[]>([]);
+  const comments = useComments(post.id);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const url = `https://jsonplaceholder.typicode.com/posts/${post.id}/comments`;
-
-        const response = await fetch(url);
-        const data = await response.json();
-
-        setComments(data);
-      } catch {}
+    return () => {
+      console.log("component did unmount");
     };
-
-    fetchData();
   }, []);
 
   return (
@@ -34,8 +26,8 @@ export const Post: FC<Props> = (props) => {
         <>
           <h3>Comments:</h3>
           {comments.map((comment) => (
-            <div className="posts-item">
-              <p key={comment.id}>
+            <div key={comment.id} className="posts-item">
+              <p>
                 {comment.name} ({comment.email})
               </p>
               <p>{comment.body}</p>
@@ -46,4 +38,4 @@ export const Post: FC<Props> = (props) => {
       <button onClick={onBackPress}>Go back</button>
     </div>
   );
-};
+});

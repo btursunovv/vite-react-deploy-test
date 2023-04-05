@@ -1,11 +1,23 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { IPost } from "./types";
 import { Post } from "./Post";
+import { useComments } from "./hooks/useComments";
 
 function App() {
+  const [count, setCount] = useState(1);
   const [posts, setPosts] = useState<IPost[]>([]);
-  const [selectedPost, setSelectedPost] = useState<IPost | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const counterComments = useComments(count);
+
+  const selectedPost = useMemo(() => {
+    const post = posts.find((item) => item.id === selectedId);
+
+    return post ? { ...post, title: post.title.toUpperCase() } : null;
+  }, [selectedId, posts]);
+
+  const onBackPress = useCallback(() => setSelectedId(null), []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,14 +37,20 @@ function App() {
   return (
     <div className="App">
       <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>Comments count: {JSON.stringify(counterComments)}</p>
         {selectedPost ? (
-          <Post post={selectedPost} onBackPress={() => setSelectedPost(null)} />
+          <Post post={selectedPost} onBackPress={onBackPress} />
         ) : (
           <>
             {posts.map((post) => (
-              <div className="posts-item">
-                <p key={post.id}>{post.title}</p>
-                <button onClick={() => setSelectedPost(post)}>View Post</button>
+              <div key={post.id} className="posts-item">
+                <p>{post.title}</p>
+                <button onClick={() => setSelectedId(post.id)}>
+                  View Post
+                </button>
               </div>
             ))}
           </>
