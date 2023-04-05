@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import "./App.css";
 import { IPost } from "./types";
 import { Post } from "./Post";
-import { useComments } from "./hooks/useComments";
+import { useComments } from "./hooks";
 
 function App() {
   const [count, setCount] = useState(1);

@@ -1,0 +1,8 @@
+.comment {
+  border: 1px solid hsl(257, 49%, 47%);
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}

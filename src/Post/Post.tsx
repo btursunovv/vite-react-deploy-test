@@ -1,6 +1,7 @@
-import { FC, memo, useEffect, useState } from "react";
-import { IComment, IPost } from "./types";
-import { useComments } from "./hooks/useComments";
+import { FC, memo, useEffect } from "react";
+import { IPost } from "../types";
+import { useComments } from "../hooks";
+import styles from "./Post.module.css";
 
 interface Props {
   post: IPost;
@@ -26,7 +27,7 @@ export const Post: FC<Props> = memo((props) => {
         <>
           <h3>Comments:</h3>
           {comments.map((comment) => (
-            <div key={comment.id} className="posts-item">
+            <div key={comment.id} className={styles.comment}>
               <p>
                 {comment.name} ({comment.email})
               </p>
