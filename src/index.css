@@ -67,3 +67,12 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.posts-item {
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
